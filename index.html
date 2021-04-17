@@ -2,35 +2,38 @@
 <html lang="en" >
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="author" content="Alvaro Montoro (alvaromontoro@gmail.com)" />
-    <meta name="keywords" content="jeff,bezos,earnings,calculator" />
-    <meta name="description" content="See how much Jeff Bezos made since you loaded the page." />
+    <meta name="original-author" content="Alvaro Montoro (alvaromontoro@gmail.com)" />
+	<meta name="author" content="Alfonso Sica (sicalfonso@gmail.com)" />
+    <meta name="keywords" content="sica,earnings,calculator" />
+    <meta name="description" content="See how much Alfonso Sica made since you loaded the page." />
     <meta name="theme-color" content="#ffffff" />
-    <meta property="og:title" content="Bezos Earnings Calculator" />
+    <meta property="og:title" content="Sica Earnings Calculator" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://bezoscalculator.com/" />
-    <meta property="og:image" content="https://bezoscalculator.com/thumb.jpg" />
-    <meta property="og:description" content="See how much Jeff Bezos made since you loaded the page." />
+    <meta property="og:url" content="http://alfonsosica.altervista.org/sicalculator/" />
+    <meta property="og:image" content="http://alfonsosica.altervista.org/sicalculator/thumb.jpg" />
+    <meta property="og:description" content="See how much Alfonso Sica made since you loaded the page." />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:url" content="https://bezoscalculator.com/" />
-    <meta name="twitter:title" content="Bezos Earnings Calculator" />
-    <meta name="twitter:description" content="See how much Jeff Bezos made since you loaded the page." />
-    <meta name="twitter:image" content="https://bezoscalculator.com/thumb.jpg" />
-    <meta name="monetization" content="$ilp.uphold.com/2f28xFUMdj9Z" />
+    <meta name="twitter:url" content="http://alfonsosica.altervista.org/sicalculator/" />
+    <meta name="twitter:title" content="Sica Earnings Calculator" />
+    <meta name="twitter:description" content="See how much Alfonso Sica made since you loaded the page." />
+    <meta name="twitter:image" content="http://alfonsosica.altervista.org/sicalculator/thumb.jpg" />
+	<meta name="monetization" content="$ilp.gatehub.net/398284227">
 
-    <title>Bezos' Calculator</title>
+
+    <title>Sica's Calculator</title>
 
     <link rel="shortcut icon" href="./fav.ico" />
-    <link rel="canonical" href="https://bezoscalculator.com/" />
+    <link rel="canonical" href="http://alfonsosica.altervista.org/sicalculator/" />
     <link rel="stylesheet" href="./style.css" />
     <script src="./script.js" defer></script>
   </head>
   <body>
     <article>
-      <p>This is how much Jeff Bezos made...</p>
-      <output>
-        <span class="symbol">$</span>
+      <p id="p">This is how much Alfonso Sica made...</p>
+      <output id="output">
+        <span class="symbol">€</span>
         <span class="number u8"></span>
         <span class="number u7"></span>
         <span class="number u6"></span>
@@ -38,15 +41,29 @@
         <span class="number u5"></span>
         <span class="number u4"></span>
         <span class="number u3"></span>
-        <span class="symbol">,</span>
+        <span class="symbol u3">,</span>
         <span class="number u2"></span>
         <span class="number u1"></span>
         <span class="number u0"></span>
+        <span class="symbol">.</span>
+        <span class="number u01"></span>
+        <span class="number u02"></span>
+        <span class="number u03"></span>
+        <span class="number u04"></span>
       </output>
-      <p>...since you started reading this page.</p>
+      <p id="p2">...since you started reading this page.</p>
+      <p id="p3">wanna try with your earnings?</p>
+      <button class="speedUp" id="try-yours">than click me</button>
+      <!--
+      <p id="p3">wanna go faster?</p>
+      <button class="speedUp" onclick="speedUp(2)">x2</button>
+      <button class="speedUp" onclick="speedUp(10)">x10</button>
+      <button class="speedUp" onclick="speedUp(100)">x100</button>
+      -->
     </article>
     <footer>
-      <a href="https://github.com/alvaromontoro/bezos-calculator">See how this number was calculated</a>
+      <a href="https://github.com/alvaromontoro/bezos-calculator">Original project</a>
+	  <a href="https://github.com/fonzobreaker/sicalculator">Forked project</a>
     </footer>
   </body>
 </html>

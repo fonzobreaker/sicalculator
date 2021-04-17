@@ -3,44 +3,156 @@ const body = document.querySelector("body");
 const numColors = 8;
 const numTiming = 5;
 const numTops = 3;
-const earningRate = 3605;
-const numberFormatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD', maximumFractionDigits: 0, minimumFractionDigits: 0 });
+let earningRate = 0.00088787417;
+const numberFormatter = new Intl.NumberFormat('it', { style: 'currency', currency: 'EUR', maximumFractionDigits: 4, minimumFractionDigits: 2 });
 let amount = 0;
+let bubblesTimers = [];
+let nSpeed = 1;
+
+document.getElementById('try-yours').addEventListener('click',povertyCalculator,false);
 
 function createBubble(cost, text) {
   const left = Math.floor(Math.random() * 65);
   const aside = document.createElement("aside");
   aside.style.left = `${left + 5}vw`;
   aside.className = `color${Math.floor(Math.random() * numColors)} time${Math.floor(Math.random() * numTiming)} top${Math.floor(Math.random() * numTops)}`;
-  aside.innerHTML = `<b>${Math.floor(cost / earningRate)} seconds</b>:<br>${text}<br/><i>${numberFormatter.format(cost)}</i>`;
+  aside.innerHTML = `<b>${secondsToHms(Math.floor(cost / earningRate))}</b>:<br>${text}<br/><i>${numberFormatter.format(cost)}</i>`;
   body.append(aside);
 }
+function secondsToHms(d) {
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
 
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours, ") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+    return hDisplay + mDisplay + sDisplay; 
+}
 const bubbles = [
-  { cost: 15000, text: "more than a minimum wage worker... in a year" }, // Based on $7.25/h, 40h/week, 52week/year
-  { cost: 31200, text: "more than Amazon's lowest paid employee... in a year" }, // Based on $15/h, 40h/week, 52week/year
-  { cost: 47000, text: "more than the median yearly salary in the United States" }, // https://dqydj.com/average-median-top-salary-percentiles/
-  { cost: 63409, text: "more than the average yearly salary in the United States" }, // https://dqydj.com/average-median-top-salary-percentiles/
-  { cost: 81840, text: "more than his own yearly salary!" }, // https://www.marketwatch.com/story/amazon-ceo-jeff-bezos-salary-of-81840-hasnt-changed-in-decades-2020-04-16
-  { cost: 99000, text: "enough not to qualify for covid-19 stimulus checks" }, // https://www.consumerfinance.gov/about-us/blog/guide-covid-19-economic-stimulus-checks/
-  { cost: 116600, text: "more than the yearly salary of a Sr Software Developer" }, // https://www.salary.com/research/salary/listing/senior-software-developer-salary
-  { cost: 142000, text: "enough to buy a 'basic' Aston Martin Vantage" }, // https://www.caranddriver.com/aston-martin/vantage
-  { cost: 174000, text: "more than what a US Senator makes in a year" }, // https://en.wikipedia.org/wiki/Salaries_of_members_of_the_United_States_Congress
-  { cost: 182000, text: "enough to buy a fully loaded Tesla Model S" }, // https://www.tesla.com/models/design
-  { cost: 250000, text: "enough to raise a child from birth to age 17" }, // https://www.fool.com/investing/general/2014/08/23/does-it-really-cost-250000-to-raise-a-child.aspx
-  { cost: 295300, text: "enough to buy a house for the median price in the USA" }, // https://www.fool.com/the-ascent/research/average-house-price-state/
-  { cost: 320000, text: "more than the yearly salary of 99% of the US population" }, // https://dqydj.com/average-median-top-salary-percentiles/
-  { cost: 400000, text: "more than what the US President makes in a year" }, // https://www.thebalance.com/presidents-salary-4579867
-  { cost: 538926, text: "more than the annual income of the US 1%" }, // https://www.usatoday.com/story/money/2020/07/01/how-much-you-need-to-make-to-be-in-the-1-in-every-state/112002276/
-  { cost: 916000, text: "more than the median cost of a Manhattan apartment" }, // https://www.nytimes.com/2015/01/18/realestate/what-750000-buys-you-in-new-york-city.html
-  { cost: 1000000, text: "enough to pay for the most expensive fishing lure ever" }, // https://www.sportfishingmag.com/most-expensive-fishing-lures-in-world/
-  { cost: 1500000, text: "more than the annual income of the US 0.1%" }, // https://review.chicagobooth.edu/economics/2017/article/never-mind-1-percent-lets-talk-about-001-percent
-  { cost: 2029612, text: "enough to pay for a house in Hollywood, CA" }, // https://www.zillow.com/hollywood-hills-los-angeles-ca/home-values/
-  { cost: 7000000, text: "more than the annual income of the US 0.01%" }, // https://review.chicagobooth.edu/economics/2017/article/never-mind-1-percent-lets-talk-about-001-percent
-  { cost: 69346250, text: "more than the most expensive NFT" }, // https://onlineonly.christies.com/s/beeple-first-5000-days/beeple-b-1981-1/112924
-  { cost: 81000000, text: "more than the cost of a seat to space" }, //https://www.foxbusiness.com/money/space-travel-what-it-costs-to-leave-earth
+  { cost: 0.1, text: "he can now afford a goleador" }, 
+  { cost: 0.7, text: "he can now afford a coffee" },
+  { cost: 1.2, text: "he can now afford a cappuccino" },
+  { cost: 2, text: "he can now afford a bullètt" }, 
+  { cost: 3.9, text: "he can now afford one month of Amazon Prime" },
+  { cost: 4, text: "he can now afford a MARIUS (by IKEA)" }, 
+  { cost: 4.9, text: "he can now afford a one-way trip to work by bus" }, 
+  { cost: 5, text: "he can now afford a pizza" }, 
+  { cost: 7.9, text: "he can now afford one month Neflix subscription" }, 
+  { cost: 9.8, text: "he can now afford to come back home by bus" }, 
+  { cost: 9.9, text: "he can now afford one month Spotify subscription" }, 
+  { cost: 15, text: "he can now afford one month Spotify subscription" },
+  { cost: 20, text: "he can now afford to go to work by car for 1 day" },
+  { cost: 36, text: "he can now afford one year of Amazon Prime" },
+  { cost: 50, text: "he can now afford a 0.001 Bitcoin" },
+  { cost: 100, text: "he can now afford a pair of Nike" },
+  { cost: 800, text: "he can now afford an iPhone" },
+  { cost: 1800, text: "he can now afford an Mac" },
 ]
 
 bubbles.forEach(function (el) {
-  setTimeout(`createBubble(${el.cost}, "${el.text}")`, el.cost / earningRate * 1000);
+  bubblesTimers.push(setTimeout(`createBubble(${el.cost}, "${el.text}")`, (el.cost / earningRate) * 1000));
 });
+
+// For dark mode
+document.body.addEventListener('click', () => {
+  var element = document.body;
+  element.classList.toggle("dark-mode");
+  // For light mode
+  if (document.querySelector('body').classList.contains('dark-mode')) {
+    document.getElementById('p').style.color = "black"
+    document.getElementById('p').style.textShadow = `none` 
+    document.getElementById('p2').style.color = "black"
+    document.getElementById('p2').style.textShadow = `none`
+    document.getElementById('p3').style.color = "black"
+    document.getElementById('p3').style.textShadow = `none`
+    
+    for (let el of document.getElementsByTagName('span')) {
+    	el.style.color = "white"; 
+        el.style.background="black"
+    }
+  }
+
+  // For light mode
+  else {
+    document.getElementById('p').style.color = "white" 
+    document.getElementById('p').style.textShadow = `none`
+    document.getElementById('p2').style.color = "white" 
+    document.getElementById('p2').style.textShadow = `none` 
+    document.getElementById('p3').style.color = "white" 
+    document.getElementById('p3').style.textShadow = `none` 
+    
+    for (let el of document.getElementsByTagName('span')) {
+    	el.style.color = "black"; 
+        el.style.background="white"
+    }
+  }
+})
+
+function speedUp(n){    
+	nSpeed = nSpeed * n;
+	const secondsto_00001 = parseFloat(document.styleSheets[0].cssRules[0].style.getPropertyValue('--secondsto-00001'));
+	const secondsto_0001 = parseFloat(document.styleSheets[0].cssRules[0].style.getPropertyValue('--secondsto-0001'));
+	const secondsto_001 = parseFloat(document.styleSheets[0].cssRules[0].style.getPropertyValue('--secondsto-001'));
+	const secondsto_01 = parseFloat(document.styleSheets[0].cssRules[0].style.getPropertyValue('--secondsto-01'));
+    const secondsto_1 = parseFloat(document.styleSheets[0].cssRules[0].style.getPropertyValue('--secondsto-1'));
+    const secondsto_10 = parseFloat(document.styleSheets[0].cssRules[0].style.getPropertyValue('--secondsto-10'));
+    const secondsto_100 = parseFloat(document.styleSheets[0].cssRules[0].style.getPropertyValue('--secondsto-100'));
+    const secondsto_1000 = parseFloat(document.styleSheets[0].cssRules[0].style.getPropertyValue('--secondsto-1000'));
+    const secondsto_10000 = parseFloat(document.styleSheets[0].cssRules[0].style.getPropertyValue('--secondsto-10000'));
+    const secondsto_100000 = parseFloat(document.styleSheets[0].cssRules[0].style.getPropertyValue('--secondsto-100000'));
+    const secondsto_1000000 = parseFloat(document.styleSheets[0].cssRules[0].style.getPropertyValue('--secondsto-1000000'));
+    const secondsto_10000000 = parseFloat(document.styleSheets[0].cssRules[0].style.getPropertyValue('--secondsto-10000000'));
+    const secondsto_100000000 = parseFloat(document.styleSheets[0].cssRules[0].style.getPropertyValue('--secondsto-100000000'));
+    
+    document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-00001',secondsto_00001/n+"s");
+    document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-0001',secondsto_0001/n+"s");
+    document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-001',secondsto_001/n+"s");
+    document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-01',secondsto_01/n+"s");
+    document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-1',secondsto_1/n+"s");
+    document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-10',secondsto_10/n+"s");
+    document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-100',secondsto_100/n+"s");
+    document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-1000',secondsto_1000/n+"s");
+    document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-10000',secondsto_10000/n+"s");
+    document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-100000',secondsto_100000/n+"s");
+    document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-1000000',secondsto_1000000/n+"s");
+    document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-10000000',secondsto_10000000/n+"s");
+    document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-100000000',secondsto_100000000/n+"s");    
+    
+    clearBubbles();
+}
+
+function clearBubbles(){
+	bubblesTimers.forEach(function (timer) {
+      clearTimeout(timer);
+    });
+}
+
+function povertyCalculator(){
+	event.preventDefault();
+  	event.stopImmediatePropagation();
+	const income = prompt("Set your AGS, NET, RAL or annual income");
+    if(parseFloat(income)){
+    	earningRate = parseFloat(income) / 365 / 24 / 60 / 60;
+    
+        document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-00001',0.0001/earningRate+"s");
+        document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-0001',0.001/earningRate+"s");
+        document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-001',0.01/earningRate+"s");
+        document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-01',0.1/earningRate+"s");
+        document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-1',1/earningRate+"s");
+        document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-10',10/earningRate+"s");
+        document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-100',100/earningRate+"s");
+        document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-1000',1000/earningRate+"s");
+        document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-10000',10000/earningRate+"s");
+        document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-100000',100000/earningRate+"s");
+        document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-1000000',1000000/earningRate+"s");
+        document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-10000000',10000000/earningRate+"s");
+        document.styleSheets[0].cssRules[0].style.setProperty('--secondsto-100000000',100000000/earningRate+"s");
+        clearBubbles();
+        }
+    
+    bubbles.forEach(function (el) {
+      bubblesTimers.push(setTimeout(`createBubble(${el.cost}, "${el.text}")`, (el.cost / earningRate) * 1000));
+    });
+}
