@@ -4,4 +4,4 @@ This is my version of Alvaro Montor's Bezos Calculator (https://github.com/alvar
 
 It mimics the logic of the original project but with a twist: now shows how much money I make, and lets you eventually try with your earnings.
 
-See it live on http://alfonsosica.altervista.org/sicalculator/
+See it live on https://alfonsosica.altervista.org/sicalculator/
